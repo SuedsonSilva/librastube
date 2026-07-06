@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "LIBRASTUBE",
+  "version": "0.1.0",
+  "description": "Extensão de acessibilidade para tradução de vídeos em Libras no YouTube",
+  
+  "permissions": ["scripting", "activeTab"],
+  
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ],
+
+  "content_scripts": [
+  {
+    "matches": ["https://www.youtube.com/*"],
+    "js": ["content.js"]
+  }
+],
+
+  "action": {
+    "default_title": "LIBRASTUBE"
+  }
+}

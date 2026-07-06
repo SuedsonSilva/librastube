@@ -2,12 +2,13 @@
  * ==========================================================
  * LIBRASTUBE
  * Arquivo: app.js
- * Função: Inicializar toda a aplicação.
  * ==========================================================
  */
+
+import { initializeYouTubeProvider } from "../providers/youtube/index.js";
 
 export function startApp() {
   console.log("🚀 LIBRASTUBE iniciado!");
 
-  // Aqui iniciaremos todos os módulos futuramente.
+  initializeYouTubeProvider();
 }

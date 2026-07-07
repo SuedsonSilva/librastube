@@ -11,7 +11,7 @@
  * ==========================================================
  */
 
-
+import { translateToLibras } from "./translator.js";
 import { on, emit } from "../../core/events.js";
 
 import {
@@ -123,14 +123,27 @@ export function initializeTranslationModule() {
 
 
 
-            console.log(
-                "🤟 Traduzindo legenda:"
-            );
+       console.log(
+    "🤟 Traduzindo legenda:"
+      );
 
 
-            console.log(
-                subtitle.text
-            );
+        console.log(
+            subtitle.text
+        );
+
+
+
+        const libras = translateToLibras(
+            subtitle.text
+        );
+
+
+
+        console.log(
+            "📦 Resultado tradução:",
+            libras
+        );
 
 
 

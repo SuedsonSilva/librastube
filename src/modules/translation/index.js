@@ -1,147 +1,63 @@
 /**
  * ==========================================================
  * LIBRASTUBE
- *
  * Translation Engine
- *
- * Responsável por:
- * - receber comandos de tradução
- * - ativar tradução
- * - desativar tradução
- * - informar mudança de estado
- *
  * ==========================================================
  */
 
-
 import { on, emit } from "../../core/events.js";
 
-
-
-
-
-let translationActive = false;
-
-
-
-
+let translationEnabled = false;
 
 export function initializeTranslationModule() {
 
+    console.log("🌎 Translation Engine iniciado.");
 
-  console.log(
-    "🌎 Translation Engine iniciado."
-  );
+    /*
+    ==========================================
+    Liga / Desliga tradução
+    ==========================================
+    */
 
+    on("TRANSLATION_REQUESTED", ({ enabled }) => {
 
+        translationEnabled = enabled;
 
+        console.log(
+            enabled
+                ? "▶ Tradução ativada."
+                : "⏹ Tradução desativada."
+        );
 
-  /*
-  ==========================================
-  Ativar tradução
-  ==========================================
-  */
+        emit("TRANSLATION_STATUS_CHANGED", {
+            active: translationEnabled
+        });
 
+    });
 
-  on(
-    "TRANSLATION_REQUESTED",
-    () => {
+    /*
+    ==========================================
+    Recebe legendas do Scheduler
+    ==========================================
+    */
 
+    on("TRANSLATE_SUBTITLE", (subtitle) => {
 
-      console.log(
-        "▶ Tradução solicitada pelo usuário."
-      );
+        if (!translationEnabled) return;
 
+        console.log("🤟 Traduzindo:");
 
-      startTranslation();
+        console.log(subtitle.text);
 
+        /*
+         * Aqui futuramente entraremos com:
+         *
+         * IA
+         * Avatar
+         * Cache
+         * Sincronização
+         */
 
-    }
-  );
-
-
-
-
-
-  /*
-  ==========================================
-  Desativar tradução
-  ==========================================
-  */
-
-
-  on(
-    "TRANSLATION_STOPPED",
-    () => {
-
-
-      console.log(
-        "⏹ Tradução desligada pelo usuário."
-      );
-
-
-      stopTranslation();
-
-
-    }
-  );
-
-
-}
-
-
-
-
-
-
-function startTranslation(){
-
-
-  translationActive = true;
-
-
-
-  console.log(
-    "🤟 Iniciando motor de tradução..."
-  );
-
-
-
-  emit(
-    "TRANSLATION_STATUS_CHANGED",
-    {
-      active:true
-    }
-  );
-
-
-}
-
-
-
-
-
-
-
-function stopTranslation(){
-
-
-  translationActive = false;
-
-
-
-  console.log(
-    "🛑 Parando motor de tradução..."
-  );
-
-
-
-  emit(
-    "TRANSLATION_STATUS_CHANGED",
-    {
-      active:false
-    }
-  );
-
+    });
 
 }

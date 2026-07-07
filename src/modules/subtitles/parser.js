@@ -5,115 +5,153 @@
  * Subtitle Parser
  *
  * Responsável por:
- * - interpretar legenda do YouTube
- * - transformar XML em dados
+ * - receber legenda bruta
+ * - transformar em objetos utilizáveis
  *
  * ==========================================================
  */
 
 
-export function parseSubtitleXML(xml){
+
+export function parseSubtitleData(data){
 
 
   console.log(
-    "🔎 Processando legenda..."
+    "🔎 Parser iniciado..."
   );
 
 
 
-  /*
-  ==========================================
-  Limpa caracteres escapados
-  ==========================================
-  */
+  if(!data){
 
 
-  const cleanXML =
-    xml
-      .replaceAll("&lt;", "<")
-      .replaceAll("&gt;", ">")
-      .replaceAll("&amp;", "&");
+    console.log(
+      "⚠️ Nenhum dado recebido"
+    );
 
 
+    return [];
+
+  }
 
 
 
-  const parser =
-    new DOMParser();
+  try{
+
+
+    const json =
+      JSON.parse(data);
 
 
 
+    console.log(
+      "📦 JSON recebido:"
+    );
 
-  const document =
-    parser.parseFromString(
-      cleanXML,
-      "text/xml"
+
+    console.log(
+      json
     );
 
 
 
-
-
-  const texts =
-    [
-      ...document.querySelectorAll("text")
-    ];
+    const events =
+      json.events;
 
 
 
+    if(!events){
 
 
-  const subtitles =
-    texts.map(
-      item=>{
+      console.log(
+        "⚠️ Nenhum evento encontrado"
+      );
 
 
-        return {
+      return [];
 
-
-          start:
-            Number(
-              item.getAttribute("start")
-            ),
+    }
 
 
 
-          duration:
-            Number(
-              item.getAttribute("dur") || 0
-            ),
+    const subtitles =
+      events
+
+      .filter(
+        event =>
+          event.segs
+      )
+
+
+      .map(
+
+        event=>{
+
+
+          const text =
+            event.segs
+
+            .map(
+              seg=>seg.utf8
+            )
+
+            .join("");
 
 
 
-          text:
-            item.textContent
-              .trim()
+          return {
+
+            start:
+              event.tStartMs / 1000,
 
 
-        };
+            duration:
+              event.dDurationMs / 1000,
 
 
-      }
+            text:
+              text.trim()
+
+          };
+
+
+        }
+
+      );
+
+
+
+
+    console.log(
+      "📝 Legendas processadas:"
+    );
+
+
+    console.log(
+      subtitles
     );
 
 
 
-
-
-  console.log(
-    "📝 Total de legendas encontradas:",
-    subtitles.length
-  );
+    return subtitles;
 
 
 
-  console.log(
-    subtitles.slice(0,5)
-  );
+  }
+
+  catch(error){
 
 
+    console.error(
+      "❌ Erro no parser:",
+      error
+    );
 
-  return subtitles;
+
+    return [];
+
+  }
+
 
 
 }

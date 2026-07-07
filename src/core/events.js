@@ -1,33 +1,40 @@
 /**
  * ==========================================================
  * LIBRASTUBE
- * Sistema simples de eventos
+ * Sistema interno de eventos
  * ==========================================================
  */
 
 
-const events = {};
+const listeners = {};
 
 
-export function on(eventName, callback){
+/**
+ * Registrar alguém interessado em um evento
+ */
+export function on(eventName, callback) {
 
-  if(!events[eventName]){
-    events[eventName] = [];
+  if (!listeners[eventName]) {
+    listeners[eventName] = [];
   }
 
 
-  events[eventName].push(callback);
+  listeners[eventName].push(callback);
 
 }
 
 
+/**
+ * Disparar um evento
+ */
+export function emit(eventName, data) {
 
-export function emit(eventName, data){
+  if (!listeners[eventName]) {
+    return;
+  }
 
-  if(!events[eventName]) return;
 
-
-  events[eventName].forEach(callback => {
+  listeners[eventName].forEach(callback => {
 
     callback(data);
 

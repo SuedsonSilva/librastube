@@ -2,16 +2,33 @@
  * ==========================================================
  * LIBRASTUBE
  * Translation Engine
+ *
+ * Responsável por:
+ * - controlar estado da tradução
+ * - receber legendas
+ * - enviar para tradução futura
+ *
  * ==========================================================
  */
 
+
 import { on, emit } from "../../core/events.js";
 
-let translationEnabled = false;
+import {
+    setState,
+    getState
+} from "../../core/state.js";
+
+
 
 export function initializeTranslationModule() {
 
-    console.log("🌎 Translation Engine iniciado.");
+
+    console.log(
+        "🌎 Translation Engine iniciado."
+    );
+
+
 
     /*
     ==========================================
@@ -19,45 +36,117 @@ export function initializeTranslationModule() {
     ==========================================
     */
 
-    on("TRANSLATION_REQUESTED", ({ enabled }) => {
 
-        translationEnabled = enabled;
+    on(
+        "TRANSLATION_REQUESTED",
+        ({ enabled }) => {
 
-        console.log(
-            enabled
-                ? "▶ Tradução ativada."
-                : "⏹ Tradução desativada."
-        );
 
-        emit("TRANSLATION_STATUS_CHANGED", {
-            active: translationEnabled
-        });
+            console.log(
+                "🔄 Atualizando estado da tradução:",
+                enabled
+            );
 
-    });
+
+
+            setState({
+
+                translationActive: enabled
+
+            });
+
+
+
+            console.log(
+                enabled
+                    ? "▶ Tradução ativada."
+                    : "⏹ Tradução desativada."
+            );
+
+
+
+            emit(
+                "TRANSLATION_STATUS_CHANGED",
+                {
+                    active: enabled
+                }
+            );
+
+
+        }
+    );
+
+
+
 
     /*
     ==========================================
-    Recebe legendas do Scheduler
+    Recebe legenda do Scheduler
     ==========================================
     */
 
-    on("TRANSLATE_SUBTITLE", (subtitle) => {
 
-        if (!translationEnabled) return;
+    on(
+        "TRANSLATE_SUBTITLE",
+        (subtitle) => {
 
-        console.log("🤟 Traduzindo:");
 
-        console.log(subtitle.text);
+            const state = getState();
 
-        /*
-         * Aqui futuramente entraremos com:
-         *
-         * IA
-         * Avatar
-         * Cache
-         * Sincronização
-         */
 
-    });
+
+            console.log(
+                "🔥 Evento TRANSLATE_SUBTITLE recebido"
+            );
+
+
+            console.log(
+                "🧠 Estado atual:",
+                state
+            );
+
+
+
+            if(
+                !state.translationActive
+            ){
+
+
+                console.log(
+                    "⛔ Tradução desligada."
+                );
+
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "🤟 Traduzindo legenda:"
+            );
+
+
+            console.log(
+                subtitle.text
+            );
+
+
+
+            /*
+             *
+             * PRÓXIMA FASE:
+             *
+             * enviar texto para IA
+             * receber tradução
+             * enviar para avatar Libras
+             *
+             */
+
+
+        }
+    );
+
 
 }

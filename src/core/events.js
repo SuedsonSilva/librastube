@@ -5,39 +5,50 @@
  * ==========================================================
  */
 
-
 const listeners = {};
-
 
 /**
  * Registrar alguém interessado em um evento
  */
 export function on(eventName, callback) {
 
-  if (!listeners[eventName]) {
-    listeners[eventName] = [];
-  }
+    console.log("📌 Registrando listener:", eventName);
 
+    if (!listeners[eventName]) {
+        listeners[eventName] = [];
+    }
 
-  listeners[eventName].push(callback);
+    listeners[eventName].push(callback);
 
+    console.log(
+        "👥 Total listeners",
+        eventName,
+        listeners[eventName].length
+    );
 }
-
 
 /**
  * Disparar um evento
  */
 export function emit(eventName, data) {
 
-  if (!listeners[eventName]) {
-    return;
-  }
+    console.log("📢 Emitindo evento:", eventName);
 
+    if (!listeners[eventName]) {
 
-  listeners[eventName].forEach(callback => {
+        console.log("❌ Nenhum listener encontrado para", eventName);
 
-    callback(data);
+        return;
+    }
 
-  });
+    console.log(
+        "✅ Encontrados",
+        listeners[eventName].length,
+        "listeners para",
+        eventName
+    );
 
+    listeners[eventName].forEach(callback => {
+        callback(data);
+    });
 }

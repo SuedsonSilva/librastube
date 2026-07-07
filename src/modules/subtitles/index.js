@@ -11,7 +11,18 @@
 import {
   getYouTubeCaptionUrl,
   fetchSubtitle
-} from "./youtubeSubtitle.js";
+
+} from "./providers/youtube.js";
+
+
+
+import {
+  getPlayerCaptions
+
+} from "./providers/youtubePlayer.js";
+
+
+
 
 
 
@@ -24,6 +35,38 @@ export function initializeSubtitleModule(){
 
 
 
+  console.log(
+    "🎬 Tentando extrair legenda pelo player..."
+  );
+
+
+
+  const playerCaptions =
+    getPlayerCaptions();
+
+
+
+  if(playerCaptions){
+
+
+    console.log(
+      "✅ Legendas encontradas pelo player:",
+      playerCaptions
+    );
+
+
+    return;
+
+  }
+
+
+
+  console.log(
+    "⚠️ Player não retornou legenda. Tentando método antigo..."
+  );
+
+
+
   const captionUrl =
     getYouTubeCaptionUrl();
 
@@ -32,10 +75,13 @@ export function initializeSubtitleModule(){
   if(captionUrl){
 
 
-    fetchSubtitle(captionUrl);
+    fetchSubtitle(
+      captionUrl
+    );
 
 
   }
+
 
 
 }

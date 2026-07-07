@@ -2,151 +2,251 @@
  * ==========================================================
  * LIBRASTUBE
  *
- * YouTube Subtitle Extractor
+ * YouTube Subtitle Provider
  *
  * Responsável por:
- * - encontrar as legendas do YouTube
- * - pegar a URL da legenda
- * - baixar o conteúdo da legenda
- * - analisar a resposta recebida
- * - avisar o restante da aplicação
+ * - encontrar legendas do YouTube
+ * - solicitar download para background
+ * - receber conteúdo da legenda
+ * - enviar para o parser
  *
  * ==========================================================
  */
 
-import { emit } from "../../../core/events.js";
+
+import { parseSubtitleXML } from "../parser.js";
+
+
+
+
 
 /**
  * Procura as informações de legenda
  * dentro dos scripts carregados pelo YouTube
  */
-export function getYouTubeCaptionUrl() {
+export function getYouTubeCaptionUrl(){
+
 
   const scripts = [
     ...document.querySelectorAll("script")
   ];
 
-  for (const script of scripts) {
 
-    const text = script.textContent;
 
-    if (text.includes("captionTracks")) {
+  for(const script of scripts){
+
+
+    const text =
+      script.textContent;
+
+
+
+    if(
+      text.includes("captionTracks")
+    ){
+
 
       console.log(
         "📝 Dados de legenda encontrados"
       );
 
-      const match = text.match(
-        /"captionTracks":(\[.*?\])/s
-      );
 
-      if (!match) {
+
+      const match =
+        text.match(
+          /"captionTracks":(\[.*?\])/s
+        );
+
+
+
+      if(!match){
+
 
         console.log(
           "⚠️ Não conseguiu extrair captionTracks"
         );
 
-        emit(
-          "SUBTITLE_STATUS_CHANGED",
-          {
-            available: false
-          }
-        );
 
         return null;
 
       }
 
-      const captions = JSON.parse(
-        match[1]
+
+
+
+      const captions =
+        JSON.parse(
+          match[1]
+        );
+
+
+
+      console.log(
+        "📚 Legendas encontradas:",
+        captions
       );
 
+
+
+
       const captionUrl =
-        captions[0].baseUrl;
+        captions[0].baseUrl
+        +
+        "&fmt=json3";
+
+
 
       console.log(
         "🔗 URL da legenda encontrada:"
       );
 
+
       console.log(
         captionUrl
       );
 
+
+
       return captionUrl;
+
 
     }
 
+
   }
+
+
 
   console.log(
     "⚠️ Nenhuma legenda encontrada"
   );
 
-  emit(
-    "SUBTITLE_STATUS_CHANGED",
-    {
-      available: false
-    }
-  );
+
 
   return null;
 
 }
 
+
+
+
+
+
+
 /**
- * Baixa o arquivo de legenda
+ * Busca legenda através do background
  */
-export async function fetchSubtitle(url) {
+export async function fetchSubtitle(url){
 
-  try {
 
-    const response = await fetch(url);
 
-    console.log(
-      "📡 Status da legenda:",
-      response.status
-    );
+  console.log(
+    "📤 Enviando pedido para background..."
+  );
 
-    const xml = await response.text();
 
-    console.log(
-      "📥 Legenda baixada"
-    );
 
-    console.log(
-      "📄 Conteúdo recebido:"
-    );
+  chrome.runtime.sendMessage(
 
-    console.log(
-      xml.substring(0, 500)
-    );
+    {
+      type:
+        "FETCH_SUBTITLE",
 
-    emit(
-      "SUBTITLE_STATUS_CHANGED",
-      {
-        available: true,
-        xml
+      url
+
+    },
+
+
+    (response)=>{
+
+
+      if(!response){
+
+
+        console.log(
+          "❌ Sem resposta do background"
+        );
+
+
+        return;
+
       }
-    );
 
-    return xml;
 
-  } catch (error) {
 
-    console.error(
-      "❌ Erro ao baixar legenda:",
-      error
-    );
 
-    emit(
-      "SUBTITLE_STATUS_CHANGED",
-      {
-        available: false
+      if(response.success){
+
+
+
+        console.log(
+          "📥 Legenda recebida do background"
+        );
+
+
+
+        console.log(
+          "TIPO:",
+          typeof response.data
+        );
+
+
+
+        console.log(
+          "TAMANHO:",
+          response.data.length
+        );
+
+
+
+        console.log(
+          "CONTEÚDO RECEBIDO:"
+        );
+
+
+
+        console.log(
+          response.data.substring(0,1000)
+        );
+
+
+
+        console.log(
+          "🔎 Enviando para parser..."
+        );
+
+
+
+        const subtitles =
+          parseSubtitleXML(
+            response.data
+          );
+
+
+
+        console.log(
+          "✅ Legendas prontas:",
+          subtitles
+        );
+
+
+
       }
-    );
+      else{
 
-    return null;
 
-  }
+        console.error(
+          "❌ Erro retornado pelo background:",
+          response.error
+        );
+
+
+      }
+
+
+    }
+
+  );
+
 
 }

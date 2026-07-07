@@ -18,6 +18,7 @@
  * ==========================================================
  */
 
+import { buildSignSequence } from "../sign-engine/index.js";
 
 
 export function interpretLibras(text) {
@@ -83,19 +84,24 @@ export function interpretLibras(text) {
 
 
 
-    const result = {
+    const mappedSigns =
+    buildSignSequence(signs);
 
 
-        original:text,
+
+const result = {
 
 
-        signs,
+    original:text,
 
 
-        createdAt:Date.now()
+    signs:mappedSigns,
 
 
-    };
+    createdAt:Date.now()
+
+
+};
 
 
 

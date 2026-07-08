@@ -7,10 +7,12 @@
  * Responsável por:
  * - receber sinais do Player
  * - atualizar estado
- * - controlar futura animação
+ * - controlar animação
+ * - enviar para Stage
  *
  * ==========================================================
  */
+
 
 
 import { updateStage } from "./stage.js";
@@ -22,15 +24,20 @@ import {
 } from "./avatarState.js";
 
 
+import {
+    playAnimation
+} from "./animationPlayer.js";
 
 
 
-export function updateAvatar(sign){
+
+
+export async function updateAvatar(sign){
 
 
 
     console.log(
-        "🧍 Avatar executando sinal:"
+        "🧍 Avatar recebeu sinal:"
     );
 
 
@@ -39,24 +46,32 @@ export function updateAvatar(sign){
 
 
 
+
     /*
     ==================================================
-    Atualiza estado interno
+    Estado inicial:
+    Avatar preparando movimento
     ==================================================
     */
 
 
     setAvatarState({
 
-        currentSign:sign,
+        currentSign: sign,
 
-
-        status:"executing"
-
+        status:"preparing"
 
     });
 
 
+
+
+
+    /*
+    ==================================================
+    Registra histórico
+    ==================================================
+    */
 
 
     addAvatarHistory(
@@ -66,9 +81,75 @@ export function updateAvatar(sign){
 
 
 
+
     /*
     ==================================================
-    Atualiza interface visual
+    Cria uma animação temporária
+    baseada no sinal recebido
+    ==================================================
+    */
+
+
+    const animation = {
+
+
+        word: sign.word,
+
+
+        animation:
+            sign.signal || sign.word,
+
+
+        duration:1200
+
+
+    };
+
+
+
+
+
+    console.log(
+        "🎞️ Animação criada:"
+    );
+
+
+    console.log(animation);
+
+
+
+
+
+
+
+    /*
+    ==================================================
+    Executa animação
+    ==================================================
+    */
+
+
+    setAvatarState({
+
+        status:"executing"
+
+    });
+
+
+
+    await playAnimation(
+        animation
+    );
+
+
+
+
+
+
+
+    /*
+    ==================================================
+    Atualiza Stage
     ==================================================
     */
 
@@ -76,6 +157,34 @@ export function updateAvatar(sign){
     updateStage(
         sign
     );
+
+
+
+
+
+
+
+    /*
+    ==================================================
+    Finaliza movimento
+    ==================================================
+    */
+
+
+    setAvatarState({
+
+        status:"completed"
+
+    });
+
+
+
+    console.log(
+        "✅ Avatar terminou sinal:"
+    );
+
+
+    console.log(sign);
 
 
 

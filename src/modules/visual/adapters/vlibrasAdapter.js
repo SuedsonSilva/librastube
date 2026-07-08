@@ -2,27 +2,20 @@
  * ==========================================================
  * LIBRASTUBE
  *
- * Renderer
+ * VLibras Adapter
  *
- * Apenas prepara os sinais.
+ * Futuramente será responsável por enviar
+ * os sinais ao VLibras.
  *
  * ==========================================================
  */
 
-export function renderSigns(signs) {
+export function playSigns(signs) {
 
     console.log(
-        "🎨 Renderer recebeu:"
+        "🤟 VLibras Adapter recebeu sinais."
     );
 
     console.table(signs);
-
-    if (!Array.isArray(signs)) {
-
-        return [];
-
-    }
-
-    return signs;
 
 }

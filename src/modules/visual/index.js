@@ -5,122 +5,102 @@
  * Visual Engine
  *
  * Responsável por:
- * - receber estrutura LIBRAS
- * - controlar Player
- * - criar Avatar visual
- * - atualizar Stage
+ * - receber a estrutura LIBRAS
+ * - renderizar os sinais
+ * - enviar ao Renderizador escolhido
  *
  * ==========================================================
  */
 
-
 import { on } from "../../core/events.js";
-
 
 import { renderSigns } from "./renderer.js";
 
-
 import { startPlayer } from "./player.js";
-
 
 import { createScene } from "./scene.js";
 
+import { render } from "./adapters/index.js";
 
-import { createAvatarView } from "./avatarView.js";
-
-
-
-export function initializeVisualModule(){
-
+export function initializeVisualModule() {
 
     console.log(
         "👁️ Visual Engine iniciado."
     );
 
-
-
     /*
-    ==========================================
-    Cria área visual
-    ==========================================
+    ==================================================
+    Cria painel visual
+    ==================================================
     */
-
 
     createScene();
 
-
-
-
     /*
-    ==========================================
-    Cria Avatar na tela
-    ==========================================
+    ==================================================
+    Inicia o Player
+    ==================================================
     */
-
-
-    createAvatarView();
-
-
-
-
-    /*
-    ==========================================
-    Inicia Player
-    ==========================================
-    */
-
 
     startPlayer();
 
-
-
-
-
-
     /*
-    ==========================================
-    Recebe tradução LIBRAS
-    ==========================================
+    ==================================================
+    Escuta estrutura LIBRAS
+    ==================================================
     */
 
-
     on(
-        "LIBRAS_STRUCTURE_CREATED",
-        (data)=>{
 
+        "LIBRAS_STRUCTURE_CREATED",
+
+        (data) => {
 
             console.log(
                 "👁️ Estrutura recebida pelo Visual Engine:"
             );
 
-
             console.log(data);
 
+            /*
+            ==========================================
+            Converte estrutura em sinais
+            ==========================================
+            */
 
-
-
-
-            const visual =
-            renderSigns(
+            const visual = renderSigns(
                 data.librasStructure
             );
 
+            if (!visual) {
 
+                console.warn(
+                    "⚠️ Renderer retornou vazio."
+                );
 
+                return;
 
+            }
 
             console.log(
-                "🎥 Resultado visual:"
+                "🎥 Sequência pronta para renderização:"
             );
 
+            console.table(visual);
 
-            console.log(visual);
+            /*
+            ==========================================
+            O Visual Engine não conhece
+            Avatar nem VLibras.
 
+            Apenas envia ao Adapter.
+            ==========================================
+            */
 
+            render(visual);
 
         }
 
     );
-
 
 }

@@ -5,10 +5,10 @@
  * Visual Engine
  *
  * Responsável por:
- * - receber a tradução em LIBRAS
- * - renderizar os sinais
- * - controlar a cena
- * - enviar sinais para o Avatar
+ * - receber estrutura LIBRAS
+ * - controlar Player
+ * - criar Avatar visual
+ * - atualizar Stage
  *
  * ==========================================================
  */
@@ -16,19 +16,21 @@
 
 import { on } from "../../core/events.js";
 
+
 import { renderSigns } from "./renderer.js";
+
 
 import { startPlayer } from "./player.js";
 
+
 import { createScene } from "./scene.js";
 
-import { updateAvatar } from "./avatar.js";
+
+import { createAvatarView } from "./avatarView.js";
 
 
 
-
-
-export function initializeVisualModule() {
+export function initializeVisualModule(){
 
 
     console.log(
@@ -37,12 +39,10 @@ export function initializeVisualModule() {
 
 
 
-
-
     /*
-    ==================================================
+    ==========================================
     Cria área visual
-    ==================================================
+    ==========================================
     */
 
 
@@ -51,12 +51,22 @@ export function initializeVisualModule() {
 
 
 
+    /*
+    ==========================================
+    Cria Avatar na tela
+    ==========================================
+    */
+
+
+    createAvatarView();
+
+
 
 
     /*
-    ==================================================
+    ==========================================
     Inicia Player
-    ==================================================
+    ==========================================
     */
 
 
@@ -67,19 +77,16 @@ export function initializeVisualModule() {
 
 
 
-
-
     /*
-    ==================================================
-    Recebe estrutura criada pelo Translator
-    ==================================================
+    ==========================================
+    Recebe tradução LIBRAS
+    ==========================================
     */
 
 
     on(
         "LIBRAS_STRUCTURE_CREATED",
         (data)=>{
-
 
 
             console.log(
@@ -93,22 +100,10 @@ export function initializeVisualModule() {
 
 
 
-
-
-            /*
-            ==================================================
-            Envia sinais para o Renderer
-            ==================================================
-            */
-
-
             const visual =
-                renderSigns(
-                    data.librasStructure
-                );
-
-
-
+            renderSigns(
+                data.librasStructure
+            );
 
 
 
@@ -123,57 +118,9 @@ export function initializeVisualModule() {
 
 
 
-
-
-
-
-
-            /*
-            ==================================================
-            Proteção:
-            
-            Só envia para Avatar se realmente
-            existir uma sequência válida.
-            
-            ==================================================
-            */
-
-
-            if(
-                Array.isArray(visual)
-            ){
-
-
-
-                visual.forEach(sign=>{
-
-
-                    updateAvatar(sign);
-
-
-                });
-
-
-
-            }
-            else {
-
-
-
-                console.warn(
-                    "⚠️ Nenhum sinal visual recebido."
-                );
-
-
-            }
-
-
-
-
         }
 
     );
-
 
 
 }

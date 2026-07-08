@@ -6,33 +6,34 @@
  *
  * Responsável por:
  * - receber sinais do Player
- * - atualizar estado
- * - controlar animação
- * - enviar para Stage
+ * - controlar ciclo de execução
+ * - atualizar estado interno
+ * - alimentar camada visual
+ *
+ * Futuramente:
+ * - animações reais LIBRAS
+ * - avatar 2D/3D
+ * - sincronização corporal
  *
  * ==========================================================
  */
-
 
 
 import { updateStage } from "./stage.js";
 
 
 import {
+
     setAvatarState,
     addAvatarHistory
+
 } from "./avatarState.js";
 
 
-import {
-    playAnimation
-} from "./animationPlayer.js";
 
 
 
-
-
-export async function updateAvatar(sign){
+export function updateAvatar(sign){
 
 
 
@@ -49,8 +50,14 @@ export async function updateAvatar(sign){
 
     /*
     ==================================================
-    Estado inicial:
-    Avatar preparando movimento
+    1 - Preparação do Avatar
+    ==================================================
+
+    Aqui futuramente entra:
+    - carregar animação
+    - preparar pose inicial
+    - ajustar tempo do movimento
+
     ==================================================
     */
 
@@ -67,78 +74,8 @@ export async function updateAvatar(sign){
 
 
 
-    /*
-    ==================================================
-    Registra histórico
-    ==================================================
-    */
-
-
-    addAvatarHistory(
-        sign
-    );
-
-
-
-
-
-    /*
-    ==================================================
-    Cria uma animação temporária
-    baseada no sinal recebido
-    ==================================================
-    */
-
-
-    const animation = {
-
-
-        word: sign.word,
-
-
-        animation:
-            sign.signal || sign.word,
-
-
-        duration:1200
-
-
-    };
-
-
-
-
-
     console.log(
-        "🎞️ Animação criada:"
-    );
-
-
-    console.log(animation);
-
-
-
-
-
-
-
-    /*
-    ==================================================
-    Executa animação
-    ==================================================
-    */
-
-
-    setAvatarState({
-
-        status:"executing"
-
-    });
-
-
-
-    await playAnimation(
-        animation
+        "🧍 Avatar preparando movimento..."
     );
 
 
@@ -149,14 +86,60 @@ export async function updateAvatar(sign){
 
     /*
     ==================================================
-    Atualiza Stage
+    2 - Execução do sinal
     ==================================================
     */
 
 
-    updateStage(
-        sign
-    );
+    setTimeout(()=>{
+
+
+        setAvatarState({
+
+            currentSign: sign,
+
+            status:"executing"
+
+        });
+
+
+
+        console.log(
+            "🧍 Avatar executando sinal:"
+        );
+
+
+        console.log(sign);
+
+
+
+
+
+        /*
+        ==============================================
+        Atualiza palco visual
+        ==============================================
+        */
+
+
+        updateStage(
+            sign
+        );
+
+
+
+
+        addAvatarHistory(
+            sign
+        );
+
+
+
+
+
+    },300);
+
+
 
 
 
@@ -166,25 +149,41 @@ export async function updateAvatar(sign){
 
     /*
     ==================================================
-    Finaliza movimento
+    3 - Finalização do sinal
+    ==================================================
+
+    Simula o tempo da animação.
+
+    Depois vamos trocar isso pelo
+    tempo real do movimento.
+
     ==================================================
     */
 
 
-    setAvatarState({
-
-        status:"completed"
-
-    });
+    setTimeout(()=>{
 
 
+        setAvatarState({
 
-    console.log(
-        "✅ Avatar terminou sinal:"
-    );
+            currentSign: sign,
+
+            status:"completed"
+
+        });
 
 
-    console.log(sign);
+
+        console.log(
+            "✅ Sinal concluído:"
+        );
+
+
+        console.log(sign);
+
+
+
+    },1200);
 
 
 

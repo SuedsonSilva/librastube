@@ -1,0 +1,230 @@
+/**
+ * ==========================================================
+ * LIBRASTUBE
+ *
+ * Avatar Styles
+ *
+ * ==========================================================
+ */
+
+
+
+#libras-avatar {
+
+    position: fixed;
+
+
+    /*
+    ======================================
+    Posição na tela
+    ======================================
+    */
+
+
+    right: 40px;
+
+    bottom: 80px;
+
+
+
+    width: 180px;
+
+    height: 320px;
+
+
+
+    /*
+    ======================================
+    Fica acima do Youtube
+    ======================================
+    */
+
+
+    z-index: 999999;
+
+
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+
+
+    pointer-events: none;
+
+
+
+}
+
+
+
+
+/*
+==========================================
+Cabeça
+==========================================
+*/
+
+
+.avatar-head {
+
+
+    width: 90px;
+
+    height: 90px;
+
+
+    border-radius: 50%;
+
+
+    background: #f2c6a0;
+
+
+    margin-bottom: 10px;
+
+
+}
+
+
+
+
+/*
+==========================================
+Corpo
+==========================================
+*/
+
+
+.avatar-body {
+
+
+    width: 100px;
+
+    height: 130px;
+
+
+    background: #333;
+
+
+    border-radius: 20px;
+
+
+}
+
+
+
+
+/*
+==========================================
+Braços
+==========================================
+*/
+
+
+.avatar-arm {
+
+
+    position: absolute;
+
+
+    top: 120px;
+
+
+    width: 20px;
+
+    height: 120px;
+
+
+    background: #f2c6a0;
+
+
+    border-radius: 20px;
+
+
+    transform-origin: top;
+
+
+}
+
+
+
+
+
+.avatar-arm.left {
+
+
+    left: 20px;
+
+
+}
+
+
+
+
+.avatar-arm.right {
+
+
+    right: 20px;
+
+
+}
+
+
+
+
+/*
+==========================================
+Animação básica
+==========================================
+*/
+
+
+#libras-avatar.moving .avatar-arm.right {
+
+
+    animation:
+
+    moveArm 0.5s infinite alternate;
+
+
+}
+
+
+
+#libras-avatar.moving .avatar-arm.left {
+
+
+    animation:
+
+    moveArm 0.5s infinite alternate-reverse;
+
+
+}
+
+
+
+
+
+@keyframes moveArm {
+
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+
+    to {
+
+
+        transform: rotate(40deg);
+
+    }
+
+
+}

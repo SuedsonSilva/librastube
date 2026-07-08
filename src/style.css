@@ -294,3 +294,76 @@ code {
     border-right-color: var(--border);
   }
 }
+
+
+#librastube-stage {
+
+
+    position: fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    width:260px;
+
+    height:300px;
+
+
+    background:#111;
+
+    border-radius:20px;
+
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    color:white;
+
+
+    font-family:Arial;
+
+
+    z-index:999999;
+
+
+}
+
+
+
+.avatar-placeholder {
+
+
+    font-size:80px;
+
+}
+
+
+
+.avatar-word {
+
+
+    margin-top:20px;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
+
+
+
+.avatar-status {
+
+
+    margin-top:10px;
+
+    opacity:.7;
+
+}

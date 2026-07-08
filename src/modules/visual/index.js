@@ -10,53 +10,47 @@
  * ==========================================================
  */
 
-
 import { on } from "../../core/events.js";
-
 import { renderSigns } from "./renderer.js";
+import { startPlayer } from "./player.js";
 
+export function initializeVisualModule() {
 
+    console.log("👁️ Visual Engine iniciado.");
 
-export function initializeVisualModule(){
+    /*
+    ==========================================
+    Inicia o Player de animações
+    ==========================================
+    */
 
+    startPlayer();
 
-    console.log(
-        "👁️ Visual Engine iniciado."
-    );
-
-
+    /*
+    ==========================================
+    Recebe estrutura LIBRAS pronta
+    ==========================================
+    */
 
     on(
         "LIBRAS_STRUCTURE_CREATED",
-        (data)=>{
-
+        (data) => {
 
             console.log(
                 "👁️ Estrutura recebida pelo Visual Engine:"
             );
 
-
             console.log(data);
 
-
-
-            const visual =
-                renderSigns(
-                    data.librasStructure
-                );
-
-
-            console.log(
-                "🎥 Resultado visual:"
+            renderSigns(
+                data.librasStructure
             );
 
-
-            console.log(visual);
-
-
+            console.log(
+                "🎨 Estrutura enviada para o Renderer."
+            );
 
         }
-
     );
 
 }

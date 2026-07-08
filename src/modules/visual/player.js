@@ -17,6 +17,8 @@ import { dequeue, hasItems } from "./queue.js";
 
 import { updateAvatar } from "./avatar.js";
 
+import { executeSign } from "./signController.js";
+
 
 let playing = false;
 
@@ -99,9 +101,7 @@ function loop(){
         */
 
 
-        updateAvatar(
-            sign
-        );
+        executeSign(sign);
 
 
         /*

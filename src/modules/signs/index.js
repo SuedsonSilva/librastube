@@ -7,6 +7,7 @@
  * Responsável por:
  * - buscar sinais
  * - consultar dicionário
+ * - preparar dados para avatar
  *
  * ==========================================================
  */
@@ -16,11 +17,63 @@ import { signDictionary } from "./dictionary.js";
 
 
 
+
+
+/**
+ * ==========================================================
+ * Normaliza palavra
+ *
+ * Evita problemas:
+ *
+ * "você"
+ * "VOCÊ"
+ * " você "
+ *
+ * ==========================================================
+ */
+
+
+function normalizeWord(word){
+
+
+    return word
+        .toUpperCase()
+        .trim();
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * ==========================================================
+ *
+ * Busca sinal no dicionário
+ *
+ * ==========================================================
+ */
+
+
 export function findSign(word){
 
 
+
+    const normalized =
+        normalizeWord(word);
+
+
+
+
+
     const sign =
-        signDictionary[word];
+        signDictionary[normalized];
+
+
 
 
 
@@ -33,21 +86,88 @@ export function findSign(word){
         );
 
 
-        return sign;
+
+        return {
+
+
+            word: normalized,
+
+
+            ...sign,
+
+
+            status:"found"
+
+
+
+        };
 
 
     }
 
 
 
+
+
+
     console.log(
+
         "⚠️ Sinal não encontrado:",
-        word
+
+        normalized
+
     );
 
 
 
-    return null;
+
+
+
+    return {
+
+
+        word: normalized,
+
+
+        signal:null,
+
+
+        status:"missing"
+
+
+
+    };
+
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * ==========================================================
+ *
+ * Retorna todos os sinais
+ *
+ * Futuramente usado para:
+ *
+ * - pesquisa
+ * - estatística
+ * - treinamento IA
+ *
+ * ==========================================================
+ */
+
+
+export function getAllSigns(){
+
+
+    return signDictionary;
 
 
 }

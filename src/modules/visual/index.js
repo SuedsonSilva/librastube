@@ -9,7 +9,6 @@
  * - renderizar os sinais
  * - controlar a cena
  * - enviar sinais para o Avatar
- * - criar interface visual
  *
  * ==========================================================
  */
@@ -17,23 +16,13 @@
 
 import { on } from "../../core/events.js";
 
-
 import { renderSigns } from "./renderer.js";
-
 
 import { startPlayer } from "./player.js";
 
-
 import { createScene } from "./scene.js";
 
-
 import { updateAvatar } from "./avatar.js";
-
-
-import { createStage } from "./stage.js";
-
-
-import { injectVisualStyles } from "./styles.js";
 
 
 
@@ -48,16 +37,6 @@ export function initializeVisualModule() {
 
 
 
-    /*
-    ==================================================
-    Injeta estilos visuais
-    ==================================================
-    */
-
-
-    injectVisualStyles();
-
-
 
 
     /*
@@ -67,19 +46,9 @@ export function initializeVisualModule() {
     */
 
 
-    createStage();
-
-
-
-
-    /*
-    ==================================================
-    Cria estrutura da cena
-    ==================================================
-    */
-
-
     createScene();
+
+
 
 
 
@@ -87,7 +56,6 @@ export function initializeVisualModule() {
     /*
     ==================================================
     Inicia Player
-    responsável por consumir fila
     ==================================================
     */
 
@@ -98,9 +66,12 @@ export function initializeVisualModule() {
 
 
 
+
+
+
     /*
     ==================================================
-    Recebe estrutura LIBRAS criada
+    Recebe estrutura criada pelo Translator
     ==================================================
     */
 
@@ -121,17 +92,23 @@ export function initializeVisualModule() {
 
 
 
+
+
+
             /*
-            ==========================================
-            Converte estrutura em sequência visual
-            ==========================================
+            ==================================================
+            Envia sinais para o Renderer
+            ==================================================
             */
 
 
             const visual =
-            renderSigns(
-                data.librasStructure
-            );
+                renderSigns(
+                    data.librasStructure
+                );
+
+
+
 
 
 
@@ -148,20 +125,48 @@ export function initializeVisualModule() {
 
 
 
+
+
+
             /*
-            ==========================================
-            Envia sinais para Avatar
-            ==========================================
+            ==================================================
+            Proteção:
+            
+            Só envia para Avatar se realmente
+            existir uma sequência válida.
+            
+            ==================================================
             */
 
 
-            visual.forEach(sign=>{
+            if(
+                Array.isArray(visual)
+            ){
 
 
-                updateAvatar(sign);
+
+                visual.forEach(sign=>{
 
 
-            });
+                    updateAvatar(sign);
+
+
+                });
+
+
+
+            }
+            else {
+
+
+
+                console.warn(
+                    "⚠️ Nenhum sinal visual recebido."
+                );
+
+
+            }
+
 
 
 

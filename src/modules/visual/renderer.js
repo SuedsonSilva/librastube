@@ -5,59 +5,97 @@
  * Renderer
  *
  * Responsável por:
- * - receber os sinais
- * - colocar na fila do Player
- *
- * Não executa animações.
- * Não controla Avatar.
- * Apenas alimenta a fila.
+ * - receber estrutura de sinais
+ * - enviar para fila visual
+ * - devolver sequência para o Visual Engine
  *
  * ==========================================================
  */
 
+
 import { enqueue } from "./queue.js";
 
+
+
+
+
 export function renderSigns(signs) {
+
+
 
     console.log(
         "🎨 Renderer recebeu:"
     );
 
+
+
     console.table(signs);
+
+
+
 
     /*
     ==================================================
-    Segurança
+    Proteção contra dados vazios
     ==================================================
     */
 
-    if (!Array.isArray(signs)) {
 
-        console.error(
-            "❌ Renderer recebeu algo inválido:",
+    if(
+        !Array.isArray(signs)
+    ){
+
+
+        console.warn(
+            "⚠️ Renderer recebeu dados inválidos:",
             signs
         );
 
-        return;
+
+        return [];
 
     }
 
-    /*
-    ==================================================
-    Coloca cada sinal na fila.
-    ==================================================
-    */
+
+
+
+
+
 
     signs.forEach(sign => {
+
+
 
         console.log(
             "📥 Sinal entrou na fila:"
         );
 
+
         console.log(sign);
+
+
 
         enqueue(sign);
 
+
+
     });
+
+
+
+
+
+
+
+    /*
+    ==================================================
+    Retorna para o Visual Engine
+    ==================================================
+    */
+
+
+    return signs;
+
+
 
 }

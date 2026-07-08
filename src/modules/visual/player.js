@@ -1,35 +1,151 @@
 /**
  * ==========================================================
  * LIBRASTUBE
- * Animation Player
+ *
+ * Visual Player
+ *
+ * Responsável por:
+ * - consumir a fila de sinais
+ * - controlar o tempo de reprodução
+ * - enviar sinais para o Avatar futuramente
+ *
  * ==========================================================
  */
 
-import {
-    hasSigns,
-    dequeue
-} from "./queue.js";
+
+import { dequeue, hasItems } from "./queue.js";
+
+import { updateAvatar } from "./avatar.js";
+
 
 let playing = false;
 
-export function startPlayer() {
 
-    if (playing) return;
+/*
+==================================================
+Tempo de cada sinal.
+
+Futuramente será controlado
+pela velocidade do intérprete.
+==================================================
+*/
+
+const SIGN_DURATION = 800;
+
+
+
+export function startPlayer(){
+
+
+    if(playing){
+
+        console.log(
+            "⚠️ Player já está executando."
+        );
+
+        return;
+
+    }
+
 
     playing = true;
 
-    console.log("▶ Animation Player iniciado.");
 
-    setInterval(() => {
+    console.log(
+        "▶ Player iniciado."
+    );
 
-        if (!hasSigns()) return;
+
+    loop();
+
+
+}
+
+
+
+/*
+==================================================
+Loop principal do Player
+
+Ele verifica constantemente
+se existe sinal disponível.
+
+==================================================
+*/
+
+
+function loop(){
+
+
+    if(hasItems()){
+
 
         const sign = dequeue();
 
-        console.log("🎬 Executando sinal:");
+
+        console.log(
+            "🎬 Player reproduzindo sinal:"
+        );
+
 
         console.log(sign);
 
-    }, 700);
+
+
+        /*
+        ==========================================
+        Envia para Avatar
+        ==========================================
+        */
+
+
+        updateAvatar(
+            sign
+        );
+
+
+        /*
+        ==========================================
+        Aguarda o tempo do sinal
+        ==========================================
+        */
+
+
+        setTimeout(()=>{
+
+
+            loop();
+
+
+        }, SIGN_DURATION);
+
+
+
+    }
+
+
+    else {
+
+
+        /*
+        ==========================================
+        Nenhum sinal.
+        Continua aguardando.
+        ==========================================
+        */
+
+
+        setTimeout(()=>{
+
+
+            loop();
+
+
+        },200);
+
+
+
+    }
+
 
 }

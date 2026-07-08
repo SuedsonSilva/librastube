@@ -11,6 +11,7 @@ import { initializeUI } from "../ui/index.js";
 import { initializeYouTubeProvider } from "../providers/youtube/index.js";
 import { initializeSubtitleModule } from "../modules/subtitles/index.js";
 import { initializeTranslationModule } from "../modules/translation/index.js";
+import { initializeVisualModule } from "../modules/visual/index.js";
 
 function initializeModules() {
 
@@ -21,6 +22,8 @@ function initializeModules() {
   initializeSubtitleModule();
 
   initializeTranslationModule();
+
+  initializeVisualModule();
 
 }
 

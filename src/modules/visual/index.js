@@ -8,7 +8,9 @@
  * - receber a tradução em LIBRAS
  * - renderizar os sinais
  * - controlar a cena
- * - enviar sinais para o Avatar
+ *
+ * O Avatar NÃO é chamado daqui.
+ * Quem controla a reprodução é o Player.
  *
  * ==========================================================
  */
@@ -21,10 +23,6 @@ import { startPlayer } from "./player.js";
 
 import { createScene } from "./scene.js";
 
-import { updateAvatar } from "./avatar.js";
-
-
-
 export function initializeVisualModule() {
 
     console.log(
@@ -33,8 +31,7 @@ export function initializeVisualModule() {
 
     /*
     ==================================================
-    Cria a área visual onde futuramente ficará
-    o avatar e os sinais.
+    Cria a cena visual.
     ==================================================
     */
 
@@ -42,8 +39,7 @@ export function initializeVisualModule() {
 
     /*
     ==================================================
-    Inicia o Player responsável por consumir
-    a fila visual.
+    Inicia o Player.
     ==================================================
     */
 
@@ -51,7 +47,7 @@ export function initializeVisualModule() {
 
     /*
     ==================================================
-    Escuta quando a tradução termina.
+    Recebe a estrutura criada pelo Translation Engine.
     ==================================================
     */
 
@@ -66,36 +62,31 @@ export function initializeVisualModule() {
             console.log(data);
 
             /*
-            ==========================================
-            Renderer transforma a estrutura em sinais
-            prontos para exibição.
-            ==========================================
+            ==================================================
+            Segurança
+            ==================================================
             */
 
-            const visual = renderSigns(
-                data.librasStructure
-            );
+            if (!data || !Array.isArray(data.librasStructure)) {
 
-            console.log(
-                "🎥 Resultado visual:"
-            );
+                console.error(
+                    "❌ Estrutura LIBRAS inválida:",
+                    data
+                );
 
-            console.log(visual);
+                return;
+
+            }
 
             /*
-            ==========================================
-            Envia cada sinal para o Avatar.
-            Neste momento o Avatar apenas registra
-            no console, mas futuramente executará
-            a animação correspondente.
-            ==========================================
+            ==================================================
+            Renderer envia tudo para a fila.
+            ==================================================
             */
 
-            visual.forEach(sign => {
-
-                updateAvatar(sign);
-
-            });
+            renderSigns(
+                data.librasStructure
+            );
 
         }
 

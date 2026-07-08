@@ -5,9 +5,12 @@
  * Renderer
  *
  * Responsável por:
- * - receber a estrutura de sinais
+ * - receber os sinais
  * - colocar na fila do Player
- * - devolver os sinais para o Visual Engine
+ *
+ * Não executa animações.
+ * Não controla Avatar.
+ * Apenas alimenta a fila.
  *
  * ==========================================================
  */
@@ -23,9 +26,26 @@ export function renderSigns(signs) {
     console.table(signs);
 
     /*
-    ==========================================
-    Envia todos os sinais para a fila
-    ==========================================
+    ==================================================
+    Segurança
+    ==================================================
+    */
+
+    if (!Array.isArray(signs)) {
+
+        console.error(
+            "❌ Renderer recebeu algo inválido:",
+            signs
+        );
+
+        return;
+
+    }
+
+    /*
+    ==================================================
+    Coloca cada sinal na fila.
+    ==================================================
     */
 
     signs.forEach(sign => {
@@ -39,13 +59,5 @@ export function renderSigns(signs) {
         enqueue(sign);
 
     });
-
-    /*
-    ==========================================
-    Devolve a sequência para quem chamou.
-    ==========================================
-    */
-
-    return signs;
 
 }

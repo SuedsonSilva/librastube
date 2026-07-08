@@ -4,13 +4,12 @@
  *
  * Avatar Adapter
  *
- * Responsável por enviar sinais
- * para o Avatar.
- *
  * ==========================================================
  */
 
 import { enqueue } from "../queue.js";
+
+import { resolveSign } from "../../signs/resolver.js";
 
 export function playSigns(signs) {
 
@@ -20,17 +19,21 @@ export function playSigns(signs) {
 
     if (!Array.isArray(signs)) {
 
-        console.warn(
-            "⚠️ Lista de sinais inválida."
-        );
-
         return;
 
     }
 
     signs.forEach(sign => {
 
-        enqueue(sign);
+        const resolved = resolveSign(sign);
+
+        console.log(
+            "🎯 Sinal resolvido:"
+        );
+
+        console.log(resolved);
+
+        enqueue(resolved);
 
     });
 

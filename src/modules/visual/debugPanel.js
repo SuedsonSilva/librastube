@@ -27,11 +27,18 @@ export function createDebugPanel() {
 
         <h3>🤟 LibrasTube</h3>
 
-        <div id="lt-original">Original:</div>
+        <div id="lt-original">
+            Original:
+        </div>
 
-        <div id="lt-gloss">Gloss:</div>
+        <div id="lt-gloss">
+            Gloss:
+        </div>
 
-        <div id="lt-current">Sinal:</div>
+        <div id="lt-current">
+            Atual:
+            <strong id="librastube-debug-current">-</strong>
+        </div>
 
     `;
 
@@ -43,7 +50,7 @@ export function createDebugPanel() {
 
         top: "100px",
 
-        width: "300px",
+        width: "320px",
 
         background: "#111",
 
@@ -57,7 +64,9 @@ export function createDebugPanel() {
 
         fontSize: "14px",
 
-        fontFamily: "Arial"
+        fontFamily: "Arial",
+
+        lineHeight: "1.7"
 
     });
 
@@ -67,13 +76,36 @@ export function createDebugPanel() {
 
 export function updateDebugPanel(data) {
 
-    document.querySelector("#lt-original").textContent =
-        "Original: " + (data.original ?? "-");
+    const original =
+        document.querySelector("#lt-original");
 
-    document.querySelector("#lt-gloss").textContent =
-        "Gloss: " + (data.gloss ?? "-");
+    const gloss =
+        document.querySelector("#lt-gloss");
 
-    document.querySelector("#lt-current").textContent =
-        "Atual: " + (data.current ?? "-");
+    const current =
+        document.querySelector("#librastube-debug-current");
+
+    if(original){
+
+        original.textContent =
+            "Original: " +
+            (data.original ?? "-");
+
+    }
+
+    if(gloss){
+
+        gloss.textContent =
+            "Gloss: " +
+            (data.gloss ?? "-");
+
+    }
+
+    if(current){
+
+        current.textContent =
+            data.current ?? "-";
+
+    }
 
 }

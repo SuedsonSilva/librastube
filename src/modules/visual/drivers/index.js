@@ -9,12 +9,6 @@
 
 import {
 
-    initializeVLibrasBridge
-
-} from "./vlibrasBridge.js";
-
-import {
-
     render,
 
     setDriver,
@@ -23,15 +17,13 @@ import {
 
 } from "./driverManager.js";
 
-
-
 export function initializeDrivers(){
 
-    initializeVLibrasBridge();
+    console.log(
+        "🚗 Drivers inicializados."
+    );
 
 }
-
-
 
 export {
 

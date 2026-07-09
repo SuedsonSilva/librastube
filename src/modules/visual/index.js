@@ -36,6 +36,8 @@ import {
 
 } from "./debugPanel.js";
 
+import { createStage } from "./stage.js";
+
 
 
 export function initializeVisualModule() {
@@ -51,6 +53,8 @@ export function initializeVisualModule() {
     */
 
     createScene();
+
+    createStage();
 
     createDebugPanel();
 

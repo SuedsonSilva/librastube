@@ -4,42 +4,43 @@
  *
  * Executor
  *
- * Responsável por executar qualquer
- * Render Package recebido pela Bridge.
- *
- * Hoje:
- *   - Atualiza o painel Debug.
- *
- * Amanhã:
- *   - Controlará o VLibras.
- *
  * ==========================================================
  */
 
-export function executeAnimation(animation) {
+import { updateStage } from "../stage.js";
+
+export function executeCommand(command){
 
     console.log(
-        "🎬 Executor recebeu:",
-        animation.word
+        "🎬 Executor recebeu comando:"
     );
 
-    const current =
-        document.querySelector("#lt-current");
+    console.log(command);
 
-    if (!current) return;
+    switch(command.type){
 
-    current.innerHTML = `
-        <strong>▶ Executando</strong>
+        case "PLAY_SIGN":
 
-        <div style="
-            margin-top:10px;
-            font-size:32px;
-            font-weight:bold;
-            color:#00ff99;
-            text-align:center;
-        ">
-            ${animation.word}
-        </div>
-    `;
+            playSign(
+                command.payload
+            );
+
+            break;
+
+        default:
+
+            console.warn(
+                "Comando desconhecido."
+            );
+
+    }
+
+}
+
+function playSign(sign){
+
+    updateStage(
+        sign.word
+    );
 
 }

@@ -4,13 +4,12 @@
  *
  * VLibras Bridge
  *
- * Faz a ponte entre o Driver
- * e o Executor.
- *
  * ==========================================================
  */
 
-import { executeAnimation } from "./executor.js";
+import { buildCommand } from "./commandBuilder.js";
+
+import { executeCommand } from "./executor.js";
 
 export function renderSequence(renderPackage) {
 
@@ -37,9 +36,10 @@ export function renderSequence(renderPackage) {
         const animation =
             renderPackage.animations[index];
 
-        executeAnimation(
-            animation
-        );
+        const command =
+            buildCommand(animation);
+
+        executeCommand(command);
 
         index++;
 

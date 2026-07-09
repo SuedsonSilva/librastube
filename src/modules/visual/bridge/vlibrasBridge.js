@@ -4,95 +4,53 @@
  *
  * VLibras Bridge
  *
- * Simula a execução do renderizador.
+ * Executor visual temporário.
  *
  * ==========================================================
  */
 
 export function renderSequence(renderPackage) {
 
-    console.log(
-        "🎬 Executando sequência..."
-    );
+    console.log("🎬 Iniciando sequência visual...");
 
-    console.table(
-        renderPackage.animations
-    );
-
-    const panel = document.querySelector(
-        "#librastube-stage"
-    );
-
-    if (!panel) {
-
-        console.warn(
-            "Stage não encontrado."
-        );
-
-        return;
-
-    }
+    const animations = renderPackage.animations;
 
     let index = 0;
 
-    next();
+    play();
 
-    function next() {
+    function play() {
 
-        if (index >= renderPackage.animations.length) {
+        if (index >= animations.length) {
 
-            panel.innerHTML = `
-                <div class="lt-finished">
-                    ✅ Tradução concluída
-                </div>
-            `;
+            console.log("🏁 Sequência finalizada.");
 
-            console.log(
-                "🏁 Sequência finalizada."
-            );
+            updateCurrent("✔ Finalizado");
 
             return;
 
         }
 
-        const sign =
-            renderPackage.animations[index];
+        const sign = animations[index];
 
-        console.log(
-            "🤟 Executando:",
-            sign.word
-        );
+        console.log("🤟", sign.word);
 
-        panel.innerHTML = `
-
-            <div class="lt-sign">
-
-                <div class="lt-word">
-
-                    ${sign.word}
-
-                </div>
-
-                <div class="lt-status">
-
-                    ${sign.status}
-
-                </div>
-
-            </div>
-
-        `;
+        updateCurrent(sign.word);
 
         index++;
 
-        setTimeout(
-
-            next,
-
-            sign.duration
-
-        );
+        setTimeout(play, sign.duration);
 
     }
+
+}
+
+function updateCurrent(word) {
+
+    const current = document.querySelector("#lt-current");
+
+    if (!current) return;
+
+    current.textContent = "Atual: " + word;
 
 }

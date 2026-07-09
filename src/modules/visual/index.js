@@ -7,7 +7,7 @@
  * Responsável por:
  * - receber a estrutura LIBRAS
  * - renderizar os sinais
- * - enviar ao Renderizador escolhido
+ * - enviar ao Driver escolhido
  *
  * ==========================================================
  */
@@ -20,7 +20,23 @@ import { startPlayer } from "./player.js";
 
 import { createScene } from "./scene.js";
 
-import { render } from "./adapters/index.js";
+import {
+
+    initializeDrivers,
+
+    render
+
+} from "./drivers/index.js";
+
+import {
+
+    createDebugPanel,
+
+    updateDebugPanel
+
+} from "./debugPanel.js";
+
+
 
 export function initializeVisualModule() {
 
@@ -30,23 +46,21 @@ export function initializeVisualModule() {
 
     /*
     ==================================================
-    Cria painel visual
+    Inicialização
     ==================================================
     */
 
     createScene();
 
-    /*
-    ==================================================
-    Inicia o Player
-    ==================================================
-    */
+    createDebugPanel();
+
+    initializeDrivers();
 
     startPlayer();
 
     /*
     ==================================================
-    Escuta estrutura LIBRAS
+    Recebe estrutura criada pelo Translator
     ==================================================
     */
 
@@ -64,7 +78,7 @@ export function initializeVisualModule() {
 
             /*
             ==========================================
-            Converte estrutura em sinais
+            Renderiza sinais
             ==========================================
             */
 
@@ -86,18 +100,51 @@ export function initializeVisualModule() {
                 "🎥 Sequência pronta para renderização:"
             );
 
-            console.table(visual);
+            console.table(
+                visual
+            );
 
             /*
             ==========================================
-            O Visual Engine não conhece
-            Avatar nem VLibras.
-
-            Apenas envia ao Adapter.
+            Envia ao Driver
             ==========================================
             */
 
-            render(visual);
+            const renderPackage = render(
+                visual
+            );
+
+            console.log(
+                "🚀 Driver retornou:"
+            );
+
+            console.log(
+                renderPackage
+            );
+
+            /*
+            ==========================================
+            Atualiza painel Debug
+            ==========================================
+            */
+
+            updateDebugPanel({
+
+                original:
+
+                    data.original ?? "-",
+
+                gloss:
+
+                    visual
+                        .map(sign => sign.word)
+                        .join(" "),
+
+                current:
+
+                    visual[0]?.word ?? "-"
+
+            });
 
         }
 

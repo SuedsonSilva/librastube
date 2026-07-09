@@ -4,6 +4,9 @@
  *
  * Debug Panel
  *
+ * Painel visual temporário para acompanhar
+ * toda a execução da tradução.
+ *
  * ==========================================================
  */
 
@@ -25,20 +28,23 @@ export function createDebugPanel() {
 
     panel.innerHTML = `
 
-        <h3>🤟 LibrasTube</h3>
+        <h3 style="
+            margin:0 0 15px 0;
+            color:#00ff99;
+            text-align:center;
+        ">
+            🤟 LibrasTube
+        </h3>
 
-        <div id="lt-original">
-            Original:
-        </div>
+        <div id="lt-original"></div>
 
-        <div id="lt-gloss">
-            Gloss:
-        </div>
+        <hr>
 
-        <div id="lt-current">
-            Atual:
-            <strong id="librastube-debug-current">-</strong>
-        </div>
+        <div id="lt-gloss"></div>
+
+        <hr>
+
+        <div id="lt-current"></div>
 
     `;
 
@@ -58,15 +64,15 @@ export function createDebugPanel() {
 
         zIndex: 999999,
 
-        padding: "15px",
+        padding: "18px",
 
-        borderRadius: "10px",
+        borderRadius: "12px",
 
         fontSize: "14px",
 
         fontFamily: "Arial",
 
-        lineHeight: "1.7"
+        boxShadow: "0 0 18px rgba(0,0,0,.45)"
 
     });
 
@@ -83,28 +89,40 @@ export function updateDebugPanel(data) {
         document.querySelector("#lt-gloss");
 
     const current =
-        document.querySelector("#librastube-debug-current");
+        document.querySelector("#lt-current");
 
-    if(original){
+    if (original) {
 
-        original.textContent =
-            "Original: " +
-            (data.original ?? "-");
-
-    }
-
-    if(gloss){
-
-        gloss.textContent =
-            "Gloss: " +
-            (data.gloss ?? "-");
+        original.innerHTML = `
+            <strong>📝 Original</strong><br>
+            ${data.original ?? "-"}
+        `;
 
     }
 
-    if(current){
+    if (gloss) {
 
-        current.textContent =
-            data.current ?? "-";
+        gloss.innerHTML = `
+            <strong>🤟 Gloss LIBRAS</strong><br>
+            ${data.gloss ?? "-"}
+        `;
+
+    }
+
+    if (current) {
+
+        current.innerHTML = `
+            <strong>▶ Atual</strong>
+            <div style="
+                margin-top:10px;
+                font-size:30px;
+                font-weight:bold;
+                color:#00ff99;
+                text-align:center;
+            ">
+                ${data.current ?? "-"}
+            </div>
+        `;
 
     }
 

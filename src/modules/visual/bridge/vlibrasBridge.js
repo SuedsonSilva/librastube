@@ -4,16 +4,19 @@
  *
  * VLibras Bridge
  *
- * Executor visual temporário.
+ * Faz a ponte entre o Driver
+ * e o Executor.
  *
  * ==========================================================
  */
 
+import { executeAnimation } from "./executor.js";
+
 export function renderSequence(renderPackage) {
 
-    console.log("🎬 Iniciando sequência visual...");
-
-    const animations = renderPackage.animations;
+    console.log(
+        "🌉 Bridge iniciou sequência."
+    );
 
     let index = 0;
 
@@ -21,36 +24,33 @@ export function renderSequence(renderPackage) {
 
     function play() {
 
-        if (index >= animations.length) {
+        if (index >= renderPackage.animations.length) {
 
-            console.log("🏁 Sequência finalizada.");
-
-            updateCurrent("✔ Finalizado");
+            console.log(
+                "🏁 Sequência finalizada."
+            );
 
             return;
 
         }
 
-        const sign = animations[index];
+        const animation =
+            renderPackage.animations[index];
 
-        console.log("🤟", sign.word);
-
-        updateCurrent(sign.word);
+        executeAnimation(
+            animation
+        );
 
         index++;
 
-        setTimeout(play, sign.duration);
+        setTimeout(
+
+            play,
+
+            animation.duration
+
+        );
 
     }
-
-}
-
-function updateCurrent(word) {
-
-    const current = document.querySelector("#lt-current");
-
-    if (!current) return;
-
-    current.textContent = "Atual: " + word;
 
 }

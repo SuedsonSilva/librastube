@@ -9,27 +9,29 @@
 
 import {
 
-    render,
+    enqueue
+
+} from "./renderQueue.js";
+
+import {
 
     setRenderer
 
 } from "./renderers/index.js";
 
+import {
+
+    startRenderLoop
+
+} from "./renderLoop.js";
+
 export function initializeRenderEngine(){
-
-    /*
-    ==========================================
-    Hoje usamos Debug.
-
-    Depois será VLibras.
-
-    Bastará trocar uma linha.
-    ==========================================
-    */
 
     setRenderer(
         "debug"
     );
+
+    startRenderLoop();
 
     console.log(
         "🎨 Render Engine iniciado."
@@ -39,6 +41,6 @@ export function initializeRenderEngine(){
 
 export function renderSign(sign){
 
-    render(sign);
+    enqueue(sign);
 
 }

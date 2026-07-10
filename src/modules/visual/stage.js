@@ -4,111 +4,86 @@
  *
  * Stage
  *
- * Responsável por criar a área onde
- * qualquer renderizador será exibido.
- *
  * ==========================================================
  */
 
+import { initializeRenderEngine } from "./renderEngine.js";
+
 let stage;
 
-export function createStage() {
+export function createStage(){
 
-    if (document.querySelector("#librastube-stage")) {
+    if(document.querySelector("#librastube-stage")){
 
         stage =
-            document.querySelector("#librastube-stage");
+            document.querySelector(
+                "#librastube-stage"
+            );
 
         return stage;
 
     }
 
-    stage = document.createElement("div");
+    stage =
+        document.createElement("div");
 
-    stage.id = "librastube-stage";
+    stage.id =
+        "librastube-stage";
 
-    Object.assign(stage.style, {
+    Object.assign(stage.style,{
 
-        position: "fixed",
+        position:"fixed",
 
-        bottom: "30px",
+        bottom:"30px",
 
-        right: "30px",
+        right:"30px",
 
-        width: "320px",
+        width:"340px",
 
-        height: "320px",
+        height:"340px",
 
-        background: "#181818",
+        background:"#181818",
 
-        border: "2px solid #00ff99",
+        border:"2px solid #00ff99",
 
-        borderRadius: "16px",
+        borderRadius:"16px",
 
-        zIndex: 999999,
+        zIndex:999999,
 
-        display: "flex",
+        display:"flex",
 
-        justifyContent: "center",
+        justifyContent:"center",
 
-        alignItems: "center",
+        alignItems:"center",
 
-        overflow: "hidden",
-
-        boxShadow: "0 0 20px rgba(0,0,0,.45)"
+        overflow:"hidden"
 
     });
 
-    const avatar = document.createElement("div");
+    const avatar =
+        document.createElement("div");
 
-    avatar.id = "librastube-avatar";
+    avatar.id =
+        "librastube-avatar";
 
-    avatar.style.fontSize = "120px";
+    avatar.innerHTML="🤟";
 
-    avatar.textContent = "🤟";
+    avatar.style.fontSize="120px";
 
-    stage.appendChild(avatar);
+    stage.appendChild(
+        avatar
+    );
 
-    document.body.appendChild(stage);
+    document.body.appendChild(
+        stage
+    );
+
+    initializeRenderEngine();
 
     console.log(
         "🎭 Stage criado."
     );
 
     return stage;
-
-}
-
-export function updateStage(word){
-
-    const avatar =
-        document.querySelector("#librastube-avatar");
-
-    if(!avatar) return;
-
-    avatar.innerHTML = `
-
-        <div style="text-align:center">
-
-            <div style="font-size:110px">
-
-                🤟
-
-            </div>
-
-            <div style="
-                color:white;
-                margin-top:10px;
-                font-size:24px;
-                font-weight:bold;
-            ">
-
-                ${word}
-
-            </div>
-
-        </div>
-
-    `;
 
 }

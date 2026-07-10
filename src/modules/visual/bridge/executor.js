@@ -7,21 +7,19 @@
  * ==========================================================
  */
 
-import { updateStage } from "../stage.js";
+import { renderSign } from "../renderEngine.js";
 
 export function executeCommand(command){
 
     console.log(
-        "🎬 Executor recebeu comando:"
+        "🎬 Executor recebeu comando."
     );
-
-    console.log(command);
 
     switch(command.type){
 
         case "PLAY_SIGN":
 
-            playSign(
+            renderSign(
                 command.payload
             );
 
@@ -34,13 +32,5 @@ export function executeCommand(command){
             );
 
     }
-
-}
-
-function playSign(sign){
-
-    updateStage(
-        sign.word
-    );
 
 }

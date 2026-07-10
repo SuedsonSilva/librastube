@@ -13,17 +13,22 @@ import { initializeSubtitleModule } from "../modules/subtitles/index.js";
 import { initializeTranslationModule } from "../modules/translation/index.js";
 import { initializeVisualModule } from "../modules/visual/index.js";
 
+import {createHUD } from "../modules/ui/hud.js";
+
 function initializeModules() {
 
   initializeUI();
- 
+
   initializeYouTubeProvider();
-
-  initializeSubtitleModule();
-
-  initializeTranslationModule();
-
+ 
   initializeVisualModule();
+  
+  createHUD();
+  
+  initializeTranslationModule();
+  
+  initializeSubtitleModule();
+  
 
 }
 

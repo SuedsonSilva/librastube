@@ -9,61 +9,24 @@
 
 import {
 
-    animateSign
+    updateHUD
 
-} from "../animator.js";
+} from "../../ui/hud.js";
 
 export function renderWithDebug(sign){
 
-    const avatar =
-
-        document.querySelector(
-
-            "#librastube-avatar"
-
-        );
-
-    if(!avatar){
-
-        return;
-
-    }
-
-    avatar.innerHTML = `
-
-        <div style="text-align:center">
-
-            <div
-                style="
-                    font-size:120px;
-                "
-            >
-
-                🤟
-
-            </div>
-
-            <div
-                style="
-                    color:white;
-                    font-size:24px;
-                    font-weight:bold;
-                    margin-top:10px;
-                "
-            >
-
-                ${sign.word}
-
-            </div>
-
-        </div>
-
-    `;
-
-    animateSign(
-
-        sign
-
+    console.log(
+        "🖥 Debug Renderer:"
     );
+
+    console.log(sign);
+
+    updateHUD({
+
+        word: sign.word,
+
+        status: "🟢 Traduzindo"
+
+    });
 
 }

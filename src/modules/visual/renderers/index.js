@@ -4,18 +4,35 @@
  *
  * Renderers
  *
- * Centraliza todos os renderizadores.
- *
  * ==========================================================
  */
 
 import { renderWithDebug } from "./debugRenderer.js";
 
+import { renderWithVLibras } from "./vlibrasRenderer.js";
+
 let currentRenderer = "debug";
+
+/*
+==================================================
+Renderer ativo
+==================================================
+*/
 
 export function setRenderer(renderer){
 
     currentRenderer = renderer;
+
+    console.log(
+        "🎨 Renderer alterado:",
+        renderer
+    );
+
+}
+
+export function getRenderer(){
+
+    return currentRenderer;
 
 }
 
@@ -29,10 +46,16 @@ export function render(sign){
 
             break;
 
+        case "vlibras":
+
+            renderWithVLibras(sign);
+
+            break;
+
         default:
 
             console.warn(
-                "Renderer inexistente."
+                "Renderer não encontrado."
             );
 
     }

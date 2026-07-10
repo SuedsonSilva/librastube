@@ -4,25 +4,40 @@
  *
  * Debug Renderer
  *
- * Primeiro renderizador oficial.
- *
  * ==========================================================
  */
+
+import {
+
+    animateSign
+
+} from "../animator.js";
 
 export function renderWithDebug(sign){
 
     const avatar =
+
         document.querySelector(
+
             "#librastube-avatar"
+
         );
 
-    if(!avatar) return;
+    if(!avatar){
+
+        return;
+
+    }
 
     avatar.innerHTML = `
 
         <div style="text-align:center">
 
-            <div style="font-size:120px">
+            <div
+                style="
+                    font-size:120px;
+                "
+            >
 
                 🤟
 
@@ -44,5 +59,11 @@ export function renderWithDebug(sign){
         </div>
 
     `;
+
+    animateSign(
+
+        sign
+
+    );
 
 }

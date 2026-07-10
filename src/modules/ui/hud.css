@@ -1,0 +1,77 @@
+#librastube-hud{
+
+    position:fixed;
+
+    right:20px;
+
+    top:80px;
+
+    width:320px;
+
+    background:#111;
+
+    color:#fff;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    z-index:999999999;
+
+    font-family:Arial,sans-serif;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
+
+    overflow:hidden;
+
+}
+
+#librastube-avatar{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:180px;
+
+    font-size:120px;
+
+}
+
+#lt-word{
+
+    text-align:center;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+}
+
+#lt-original,
+
+#lt-gloss,
+
+#lt-status{
+
+    margin-top:10px;
+
+    font-size:14px;
+
+}
+
+#lt-footer{
+
+    margin-top:18px;
+
+    opacity:.6;
+
+    text-align:center;
+
+    font-size:12px;
+
+}
